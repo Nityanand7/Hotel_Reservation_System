@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="card mx-auto" style="max-width: 800px;"> <!-- Centered card with max-width -->
+        <div class="card-header">
+            Booking Confirmation
+        </div>
+        <div class="card-body">
+            <h5 class="card-title">Thank you for your reservation, {{ booking.customer.user.first_name }}!</h5>
+            <p class="card-text">Your booking details are confirmed as follows:</p>
+
+            <div class="mb-3 text-left"> <!-- Text aligned to left -->
+                <strong>Room Number:</strong> {{ booking.room.room_number }}
+            </div>
+            <div class="mb-3 text-left">
+                <strong>Room Type:</strong> {{ booking.room.get_room_type_display }}
+            </div>
+            <div class="mb-3 text-left">
+                <strong>Check-in Date:</strong> {{ booking.check_in|date:"F d, Y" }}
+            </div>
+            <div class="mb-3 text-left">
+                <strong>Check-out Date:</strong> {{ booking.check_out|date:"F d, Y" }}
+            </div>
+            <div class="mb-3 text-left">
+                <strong>Room Price:</strong> ${{ booking.total_price }}
+            </div>
+
+            {% if booking_services %}
+            <h5 class="mt-4 text-left">Additional Services:</h5>
+            <ul class="list-group list-group-flush">
+                {% for service in booking_services %}
+                <li class="list-group-item text-left">
+                    {{ service.service.service_name }} - Quantity: {{ service.quantity }}
+                    <span class="badge bg-primary rounded-pill float-end">${{ service.service.price }}</span>
+                </li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+
+            <div class="mt-4 text-left">
+                <h4>Total Cost: ${{ total_cost }}</h4>
+            </div>
+
+            <!-- Button to navigate to credit card section -->
+            <div class="mt-4 text-left">
+                <a href="{% url 'credit_card_info' booking.id %}" class="btn primary-btn">Proceed to Payment</a>
+
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

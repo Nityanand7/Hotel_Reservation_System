@@ -1,0 +1,48 @@
+{% extends 'base.html' %}  <!-- Extend from a base template if you have one -->
+ {% load crispy_forms_tags %}
+{% block content %}
+    <div class="container mt-5">
+    <h1 class="mb-4">Welcome to Your Dashboard,{{request.user.first_name}}</h1>
+    <div class="row g-4">
+
+        <!-- Current Bookings Card -->
+        <div class="col-md-6 col-lg-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title">Manage Profile</h5>
+                    <p class="card-text">See your profile information.</p>
+                    <br>
+                    <a href="/user/profile/" target="_blank" class="btn primary-btn">Edit Profile</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 col-lg-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title">Current Bookings</h5>
+                    <p class="card-text">View all your current bookings and reservation details.</p>
+
+                    <a href="/user/bookings/" class="btn primary-btn">View Bookings</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Browse Rooms Card -->
+        <div class="col-md-6 col-lg-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title">Check Available Rooms</h5>
+                    <p class="card-text">Explore and book available rooms.</p>
+                    <br>
+                    <a href="/available/rooms/" class="btn primary-btn">See Rooms</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Manage Profile Card -->
+
+
+    </div>
+</div>
+{% endblock %}

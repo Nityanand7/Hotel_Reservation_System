@@ -1,0 +1,24 @@
+<!-- credit_card_info.html -->
+
+{% extends 'base.html' %}
+ {% load crispy_forms_tags %}
+{% block content %}
+<div class="container">
+    <h2 class="text-center">Payment Information</h2>
+    <p>Please enter your credit card information below:</p>
+
+    <form method="post" action="{% url 'credit_card_info' booking.id %}">
+        {% csrf_token %}
+        {{ form|crispy }}
+
+        <div class="mb-3">
+            <strong>Total Amount:</strong> ${{ total_cost }}
+        </div>
+    <center>
+        <button type="submit" class="btn primary-btn">Proceed to Payment</button>
+        <br>
+    </center>
+
+    </form>
+</div>
+{% endblock %}

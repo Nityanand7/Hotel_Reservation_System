@@ -1,0 +1,44 @@
+<!-- service_list.html -->
+
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="text-center">Service List</h2>
+    <br>
+    {% if services %}
+    <table class="table text-center">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Service Name</th>
+                <th scope="col">Price</th>
+
+            </tr>
+        </thead>
+        <tbody>
+            {% for service in services %}
+            <tr>
+                <th scope="row">{{ forloop.counter }}</th>
+                <td>{{ service.service_name }}</td>
+                <td>${{ service.price }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="4">No services available.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <br>
+    <center>
+        <a class="btn primary-btn" href="/add-service/">Add Service</a>
+    </center>
+
+    {% else %}
+    <p class="text-center">
+        No Service available in hotel.
+    </p>
+    {% endif %}
+</div>
+{% endblock %}

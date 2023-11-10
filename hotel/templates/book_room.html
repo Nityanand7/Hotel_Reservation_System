@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+ {% load crispy_forms_tags %}
+{% block content %}
+<div class="container">
+    <h2 class="text-center">Booking Room {{ room.room_number }} - {{ room.get_room_type_display }}</h2>
+    <br>
+    <form method="post">
+        {% csrf_token %}
+        {{ form|crispy }}
+        <center>
+             <button type="submit" class="btn primary-btn">Book Now</button>
+        </center>
+
+    </form>
+</div>
+{% endblock %}

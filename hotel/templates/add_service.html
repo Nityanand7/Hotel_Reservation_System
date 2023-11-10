@@ -1,0 +1,18 @@
+<!-- add_service.html -->
+
+{% extends 'base.html' %}
+ {% load crispy_forms_tags %}
+{% block content %}
+<div class="container mt-5">
+    <h2 class="text-center">Add New Service</h2>
+    <br>
+    <form method="post">
+        {% csrf_token %}
+        {{ form|crispy }}
+        <center>
+            <button type="submit" class="btn primary-btn">Add Service</button>
+        </center>
+
+    </form>
+</div>
+{% endblock %}

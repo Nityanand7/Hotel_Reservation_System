@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="text-center">Available Rooms</h2>
+    <br>
+
+    <!-- Search, Filter, and Price Range Form -->
+    <form method="GET" class="row g-3 mb-3">
+        <div class="col-auto">
+            <input type="text" class="form-control" placeholder="Search by room number" name="q" value="{{ request.GET.q }}">
+        </div>
+        <div class="col-auto">
+            <select class="form-select" name="type">
+                <option value="">Choose room type...</option>
+                <option value="SIN" {% if request.GET.type == "SIN" %}selected{% endif %}>Single</option>
+                <option value="DBL" {% if request.GET.type == "DBL" %}selected{% endif %}>Double</option>
+                <option value="SUI" {% if request.GET.type == "SUI" %}selected{% endif %}>Suite</option>
+            </select>
+        </div>
+        <div class="col-auto">
+            <input type="number" class="form-control" placeholder="Min Price" name="min_price" value="{{ min_price }}">
+        </div>
+        <div class="col-auto">
+            <input type="number" class="form-control" placeholder="Max Price" name="max_price" value="{{ max_price }}">
+        </div>
+        <div class="col-auto">
+            <button type="submit" class="btn btn-primary">Filter Rooms</button>
+        </div>
+    </form>
+
+    <!-- Rooms Display -->
+    <div class="row row-cols-1 row-cols-md-3 g-4" style="padding-top:30px;">
+
+        {% for room in rooms %}
+        <div class="col">
+            <div class="card h-100">
+                <!-- Image placeholder; replace with actual image field if exists -->
+                {% if room.image %}
+                    <img src="{{ room.image.url }}" class="card-img-top" alt="Room Image">
+                {% else %}
+                <img src="{{ room.image }}" class="card-img-top" alt="Room Image">
+                {% endif %}
+                <div class="card-body">
+                    <h5 class="card-title">Room {{ room.room_number }} - {{ room.get_room_type_display }}</h5>
+                    <p class="card-text">{{room.description}}</p>
+                </div>
+                <div class="card-footer">
+                    <small class="text-muted">Price: ${{ room.price }}/night</small>
+                    {% if request.user.is_superuser %}
+                    {% else %}
+                    {% if room.is_available %}
+                     <a href="{% url 'book_room' room.id %}" class="btn primary-btn float-end">Book Now</a>
+                    {% else %}
+                        <p style="color:red;">already booked</p>
+                    {% endif %}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <p>No rooms available based on your search criteria.</p>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
