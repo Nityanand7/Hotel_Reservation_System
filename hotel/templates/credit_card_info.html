@@ -4,10 +4,12 @@
  {% load crispy_forms_tags %}
 {% block content %}
 <div class="container">
-    <h2 class="text-center">Payment Information</h2>
-    <p>Please enter your credit card information below:</p>
-
-    <form method="post" action="{% url 'credit_card_info' booking.id %}">
+    <h2 class="text-center">Credit Card Information</h2>
+<!--    <p>Please enter your credit card information below:</p>-->
+    <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-8">
+             <form method="post" action="{% url 'credit_card_info' booking.id %}">
         {% csrf_token %}
         {{ form|crispy }}
 
@@ -20,5 +22,8 @@
     </center>
 
     </form>
+        </div>
+    </div>
+
 </div>
 {% endblock %}

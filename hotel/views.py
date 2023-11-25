@@ -103,9 +103,9 @@ def book_room(request, room_id):
             booking.user = request.user
             booking.total_price = room.price  # You might want to calculate this based on days
             booking.save()
-            room.is_available = False
+            #room.is_available = False
             room.save()
-            messages.success(request, 'Room booked successfully.')
+            messages.success(request, 'Room Added successfully.')
             return redirect('select_services', booking_id=booking.id)
     else:
         form = BookingForm()
@@ -175,7 +175,7 @@ def credit_card_info(request, booking_id):
             credit_card.save()
 
             # Update booking status and room availability
-            booking.is_active = False
+            booking.is_active = True
             booking.room.is_available = False
             booking.save()
             try:

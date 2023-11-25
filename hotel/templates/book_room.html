@@ -2,8 +2,30 @@
  {% load crispy_forms_tags %}
 {% block content %}
 <div class="container">
-    <h2 class="text-center">Booking Room {{ room.room_number }} - {{ room.get_room_type_display }}</h2>
+    <table class="table table-bordered text-center">
+        <thead>
+        <tr>
+            <th>Room Number</th>
+            <th>Room Type</th>
+            <th>Room Capacity</th>
+            <th>Price</th>
+            <th style="width:40%;">Details</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>{{room.room_number}}</td>
+             <td>{{room.get_room_type_display}}</td>
+             <td>{{room.capacity}}</td>
+             <td>{{room.price}}</td>
+             <td>{{room.description}}</td>
+        </tr>
+        </tbody>
+    </table>
     <br>
+    <h2 class="text-center">Enter Check-In & Check-Out Details</h2>
+    <br>
+
     <form method="post">
         {% csrf_token %}
         {{ form|crispy }}
