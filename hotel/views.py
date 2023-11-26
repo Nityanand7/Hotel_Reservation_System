@@ -54,6 +54,14 @@ def user_login(request):
 
     return render(request, 'login.html', {'form': form})
 
+from django.contrib.auth import logout
+def user_logout(request):
+    logout(request)
+    return redirect('login')
+
+def administration_logout(request):
+    logout(request)
+    return redirect('administration_user_login')
 
 def administraion_user_home(request):
     print("coming here")
@@ -103,7 +111,7 @@ def book_room(request, room_id):
             booking.user = request.user
             booking.total_price = room.price  # You might want to calculate this based on days
             booking.save()
-            #room.is_available = False
+            room.is_available = False
             room.save()
             messages.success(request, 'Room Added successfully.')
             return redirect('select_services', booking_id=booking.id)
@@ -289,6 +297,25 @@ def bookins_list(request):
     bookings = Booking.objects.all()
     return render(request, 'bookings_list.html', {'bookings': bookings})
 
+
+from django.shortcuts import render
+
+
+# Assuming 'Service' model has a 'price' field
 def user_bookings_list(request):
-    bookings = Booking.objects.filter(user=request.user)
+    # Get all bookings for the logged-in user
+    bookings = Booking.objects.filter(user=request.user).prefetch_related('booking_services__service')
+
+    # Calculate the total cost including services for each booking
+    for booking in bookings:
+        # Start with the total_price of the booking itself
+        total_cost = booking.total_price
+
+        # Add the cost of the services (price * quantity)
+        for booking_service in booking.booking_services.all():
+            total_cost += booking_service.service.price * booking_service.quantity
+
+        # Assign the total cost to the booking object (this does not save to the database)
+        booking.total_services_cost = total_cost
+
     return render(request, 'user_bookings_list.html', {'bookings': bookings})

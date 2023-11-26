@@ -1,61 +1,54 @@
-<!-- service_list.html -->
-
 {% extends 'base.html' %}
 
 {% block content %}
 <div class="container">
-    <h2 class="text-center">Yours Bookings Information</h2>
+    <h2 class="text-center">Your Bookings Information</h2>
     <br>
     {% if bookings %}
-    <table class="table">
-        <thead>
-            <tr>
+    <div class="row">
+        {% for b in bookings %}
+    <div class="col-md-6">
+        <div class="card mb-3" style="text-align:left !important;">
+            <div class="card-body">
+                <h5 class="card-title">{{ b.user.first_name }} {{ b.user.last_name }} - Room Booking Details</h5>
+                <p class="card-text">
+                    <strong>Room Number:</strong> {{ b.room.room_number }}<br><br>
+                    <strong>Check In:</strong> {{ b.check_in }}<br><br>
+                    <strong>Check Out:</strong> {{ b.check_out }}<br><br>
+                    <strong>Room Booking Price:</strong> {{ b.total_price }}<br><br>
+                    <strong>Service Costs:</strong>
+                    <ul>
+                    {% for booking_service in b.booking_services.all %}
+                        <li>{{ booking_service.service.service_name }}: {{ booking_service.quantity }} x {{ booking_service.service.price }}</li>
+                    {% empty %}
+                        <li>No additional services.</li>
+                    {% endfor %}
+                    </ul>
+                    <strong>Total Cost:</strong> {{ b.total_services_cost }}<br><br>
+                    <strong>Status:</strong>
+                    {% if b.is_active %}
+                        <span style="color:green;">Booked</span>
+                    {% else %}
+                        <span style="color:red;">Error in Booking</span>
+                    {% endif %}
+                </p>
+            </div>
+        </div>
+    </div>
 
-                <th scope="col">Full Name</th>
-                <th scope="col">Room Number</th>
-                <th scope="col">Check In</th>
-              <th scope="col">Check Out</th>
-              <th scope="col">Price</th>
-                <th scope="col">Booking Status</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for b in bookings %}
-            <tr>
+        {% empty %}
+        <p>No bookings available.</p>
+        {% endfor %}
+    </div>
 
-                 <td>{{b.user.first_name}} {{b.user.last_name}}</td>
-                 <td>{{b.room.room_number}}</td>
-                 <td>{{b.check_in}}</td>
-                 <td>{{b.check_out}}</td>
-                 <td>{{b.total_price}}</td>
-                 <td>
-                 {% if b.is_active %}
-                    <p style="color:green;"><span>Booked</span></p>
-                 {% else %}
-                     <p style="color:red;"><span>Error in Booking</span></p>
-                     {% endif %}
-                 </td>
-            </tr>
-            {% empty %}
-            <tr>
-                <td colspan="4">No bookings available.</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
     <br><br>
     <center>
-       <a href="/user/home/" class="btn primary-btn" target="_blank">
-        User Home
-    </a>
+        <a href="/user/home/" class="btn primary-btn" target="_blank">User Home</a>
         <br><br>
         <button onclick="window.print()" class="btn primary-btn">Print Your Bookings</button>
     </center>
-
     {% else %}
-    <p class="text-center">
-        No current bookings available in the hotel.
-    </p>
+    <p class="text-center">No current bookings available.</p>
     {% endif %}
 </div>
 {% endblock %}
